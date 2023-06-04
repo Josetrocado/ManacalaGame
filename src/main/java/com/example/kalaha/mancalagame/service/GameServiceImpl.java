@@ -66,4 +66,25 @@ public class GameServiceImpl implements GameService {
     }
     return swap();
   }
+
+  public String generateBoardString(Result result) {
+    return GamePrint.board(result.board());
+  }
+
+  public PlayerNumber determinePlayer(String playerNumber) {
+    if (playerNumber.equals("ONE")) {
+      return PlayerNumber.ONE;
+    }
+    return PlayerNumber.TWO;
+  }
+
+  public String getStartingBoard() {
+    return """
+                     Player Two
+           | 06 | 06 | 06 | 06 | 06 | 06 |
+      (00)                                 (00)
+           | 06 | 06 | 06 | 06 | 06 | 06 |
+                     Player One
+      """;
+  }
 }

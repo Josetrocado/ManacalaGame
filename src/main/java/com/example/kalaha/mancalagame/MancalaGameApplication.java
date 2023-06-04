@@ -1,7 +1,9 @@
 package com.example.kalaha.mancalagame;
 
 import com.example.kalaha.mancalagame.domain.*;
+import com.example.kalaha.mancalagame.service.BoardService;
 import com.example.kalaha.mancalagame.service.BoardServiceImpl;
+import com.example.kalaha.mancalagame.service.GameService;
 import com.example.kalaha.mancalagame.service.GameServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,9 +17,9 @@ public class MancalaGameApplication {
 		SpringApplication.run(MancalaGameApplication.class, args);
 
     Scanner scan = new Scanner(System.in);
-    BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
+    BoardService boardServiceImpl = new BoardServiceImpl();
     Board board = boardServiceImpl.createBoard();
-    GameServiceImpl game = GameServiceImpl.create(board);
+    GameService game = GameServiceImpl.create(board);
     System.out.println(GamePrint.board(board));
     System.out.println("Select house::  ");
     int selectedHouse = scan.nextInt();
