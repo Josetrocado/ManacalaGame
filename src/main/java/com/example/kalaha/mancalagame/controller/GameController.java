@@ -4,9 +4,9 @@ package com.example.kalaha.mancalagame.controller;
 import com.example.kalaha.mancalagame.domain.Board;
 import com.example.kalaha.mancalagame.domain.GamePrint;
 import com.example.kalaha.mancalagame.domain.PlayerNumber;
-import com.example.kalaha.mancalagame.service.BoardService;
-import com.example.kalaha.mancalagame.service.GameService;
-import org.apache.coyote.Response;
+import com.example.kalaha.mancalagame.domain.Result;
+import com.example.kalaha.mancalagame.service.BoardServiceImpl;
+import com.example.kalaha.mancalagame.service.GameServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.*;
   allowedHeaders = {"Content-Type", "Authorization"})
 public class GameController {
 
-  public GameController(BoardService boardService, GameService gameService) {
-    this.boardService = boardService;
-    this.gameService = gameService;
+  public GameController(BoardServiceImpl boardServiceImpl, GameServiceImpl gameServiceImpl) {
+    this.boardServiceImpl = boardServiceImpl;
+    this.gameServiceImpl = gameServiceImpl;
   }
 
   @Autowired
-  private BoardService boardService;
+  private BoardServiceImpl boardServiceImpl;
 
   @Autowired
-  private GameService gameService;
+  private GameServiceImpl gameServiceImpl;
 
 
   @GetMapping(value = "/board", produces = MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody Board getBoard() {
-   Board board = boardService.createBoard();
-   gameService = GameService.create(board);
+   Board board = boardServiceImpl.createBoard();
+   gameServiceImpl = GameServiceImpl.create(board);
 //   return "Hi";
     return board;
   }
@@ -42,7 +42,7 @@ public class GameController {
   public String makeMove(@PathVariable String playerNumber, @PathVariable int house) throws IllegalAccessException {
    PlayerNumber player = determinePlayer(playerNumber);
 
-   GameService.Result result = gameService.move(player, house);
+   Result result = gameServiceImpl.move(player, house);
    return generateBoardString(result);
   }
 
@@ -54,7 +54,7 @@ public class GameController {
     } return PlayerNumber.TWO;
   }
 
-  private String generateBoardString(GameService.Result result) {
+  private String generateBoardString(Result result) {
     return GamePrint.board(result.board());
   }
 

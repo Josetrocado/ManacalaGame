@@ -1,6 +1,6 @@
 package com.example.kalaha.mancalagame.domain;
 
-import com.example.kalaha.mancalagame.service.BoardService;
+import com.example.kalaha.mancalagame.service.BoardServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -14,11 +14,11 @@ import static org.hamcrest.core.Is.is;
 
 class BoardTest {
 
-  private final BoardService boardService = new BoardService();
+  private final BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
 
   @Test
   public void testBoardHouses() {
-    Board board = boardService.createBoard();
+    Board board = boardServiceImpl.createBoard();
 
     List<House> houses = board.getHouses();
     Map<PlayerNumber, List<House>> sides = houses.stream().collect(Collectors.groupingBy(House::getOwner));
@@ -28,7 +28,7 @@ class BoardTest {
 
   @Test
   public void testStoreHouseOnBoard() {
-    Board board = boardService.createBoard();
+    Board board = boardServiceImpl.createBoard();
     List<Store> stores = board.getStores();
     Map<PlayerNumber, List<Store>> sidesOfBoard = stores.stream().collect(Collectors.groupingBy(Store::getOwner));
     assertThat(sidesOfBoard.get(PlayerNumber.ONE).size(), is(1));
@@ -37,7 +37,7 @@ class BoardTest {
 
   @Test
   public void testBoardHasTwoPlayers() {
-    Board board = boardService.createBoard();
+    Board board = boardServiceImpl.createBoard();
     Players players = board.getPlayers();
     assertThat(players.player1().playerNumber(), is(PlayerNumber.ONE));
     assertThat(players.player2().playerNumber(), is(PlayerNumber.TWO));
@@ -45,7 +45,7 @@ class BoardTest {
 
   @Test
   public void houseNeedToHaveOppositeHouses() {
-    Board board = boardService.createBoard();
+    Board board = boardServiceImpl.createBoard();
 
     Players players = board.getPlayers();
     List<House> playerOneHouses = players.player1().houses();
@@ -67,7 +67,7 @@ class BoardTest {
 
   @Test
   public void pitNeedToCycle() {
-    Board board = boardService.createBoard();
+    Board board = boardServiceImpl.createBoard();
     Pit first = board.getHouses().get(0);
     Pit pit = first;
 

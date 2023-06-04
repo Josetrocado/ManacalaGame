@@ -1,9 +1,6 @@
 package com.example.kalaha.mancalagame.service;
 
-import com.example.kalaha.mancalagame.domain.GamePrint;
-import com.example.kalaha.mancalagame.domain.Player;
-import com.example.kalaha.mancalagame.domain.Players;
-import com.example.kalaha.mancalagame.domain.Status;
+import com.example.kalaha.mancalagame.domain.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,25 +14,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameServiceTest {
 
-  private final BoardService boardService = new BoardService();
+  private final BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
 
   @Test
   public void testActivePlayer() {
-    GameService game = GameService.create(boardService.createBoard());
+    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
     Player player = game.getActivePlayer();
     assertThat(player.playerNumber(), is(ONE));
   }
 
   @Test
   void rejectMoveByInActive() {
-    GameService game = GameService.create(boardService.createBoard());
+    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
     assertThrows(IllegalStateException.class, () -> game.move(TWO, 1));
   }
 
   @Test
   void shouldAllowPlayerToAddStones() throws IllegalAccessException {
-    GameService game = GameService.create(boardService.createBoard());
-    GameService.Result result = game.move(ONE, 1);
+    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
+    Result result = game.move(ONE, 1);
     var actual = GamePrint.board(result.board());
     assertThat(actual, is("""
                      Player Two
@@ -49,10 +46,10 @@ class GameServiceTest {
 
   @Test
   void shouldAllowAlternateTurns() throws IllegalAccessException {
-    GameService game = GameService.create(boardService.createBoard());
+    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
 
     // player one makes a move on pit 1
-    GameService.Result result = game.move(ONE, 1);
+    Result result = game.move(ONE, 1);
     var actual = GamePrint.board(result.board());
     assertThat(actual, is("""
                      Player Two
@@ -106,13 +103,13 @@ class GameServiceTest {
   @Test
   void shouldCaptureOppositeWhenLandingInOwnEmptyHouse() throws IllegalAccessException {
 
-    var board = boardService.from(
+    var board = boardServiceImpl.from(
       List.of(4, 6, 6, 6, 0, 8),
       2,
       List.of(6, 6, 6, 6, 6, 6),
       0
     );
-    GameService game = GameService.create(board);
+    GameServiceImpl game = GameServiceImpl.create(board);
     var actual = GamePrint.board(board);
 
     assertThat(actual, is("""
@@ -123,7 +120,7 @@ class GameServiceTest {
                      Player One
       """));
 
-    GameService.Result result = game.move(ONE, 1);
+    Result result = game.move(ONE, 1);
     actual = GamePrint.board(result.board());
     assertThat(actual, is("""
                      Player Two
@@ -137,13 +134,13 @@ class GameServiceTest {
 
   @Test
   void shouldFinishGameWhenOnePlayerHasNoSeeds() throws IllegalAccessException {
-    var board = boardService.from(
+    var board = boardServiceImpl.from(
       List.of(0, 0, 0, 0, 0, 1),
       35,
       List.of(6, 6, 6, 6, 6, 5),
       0
     );
-    GameService game = GameService.create(board);
+    GameServiceImpl game = GameServiceImpl.create(board);
     var actual = GamePrint.board(board);
     assertThat(actual, is("""
                      Player Two
@@ -152,7 +149,7 @@ class GameServiceTest {
            | 00 | 00 | 00 | 00 | 00 | 01 |
                      Player One
       """));
-    GameService.Result result = game.move(ONE, 6);
+    Result result = game.move(ONE, 6);
     Players players = board.getPlayers();
     assertThat(players.player1().score(), is(36));
     assertThat(players.player2().score(), is(35));

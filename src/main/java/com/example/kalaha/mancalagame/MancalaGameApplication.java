@@ -1,11 +1,8 @@
 package com.example.kalaha.mancalagame;
 
-import com.example.kalaha.mancalagame.domain.Board;
-import com.example.kalaha.mancalagame.domain.GamePrint;
-import com.example.kalaha.mancalagame.domain.PlayerNumber;
-import com.example.kalaha.mancalagame.domain.Status;
-import com.example.kalaha.mancalagame.service.BoardService;
-import com.example.kalaha.mancalagame.service.GameService;
+import com.example.kalaha.mancalagame.domain.*;
+import com.example.kalaha.mancalagame.service.BoardServiceImpl;
+import com.example.kalaha.mancalagame.service.GameServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -18,14 +15,14 @@ public class MancalaGameApplication {
 		SpringApplication.run(MancalaGameApplication.class, args);
 
     Scanner scan = new Scanner(System.in);
-    BoardService boardService = new BoardService();
-    Board board = boardService.createBoard();
-    GameService game = GameService.create(board);
+    BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
+    Board board = boardServiceImpl.createBoard();
+    GameServiceImpl game = GameServiceImpl.create(board);
     System.out.println(GamePrint.board(board));
     System.out.println("Select house::  ");
     int selectedHouse = scan.nextInt();
 
-    GameService.Result result =  game.move(PlayerNumber.ONE,selectedHouse);
+    Result result =  game.move(PlayerNumber.ONE,selectedHouse);
     System.out.println(GamePrint.board(board));
     while (result.status() == Status.ACTIVE){
       System.out.println("Player " +result.next() + " turn");

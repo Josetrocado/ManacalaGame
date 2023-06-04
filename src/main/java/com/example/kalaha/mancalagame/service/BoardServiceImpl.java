@@ -12,7 +12,7 @@ import static com.example.kalaha.mancalagame.domain.PlayerNumber.ONE;
 import static com.example.kalaha.mancalagame.domain.PlayerNumber.TWO;
 
 @Service
-public class BoardService {
+public class BoardServiceImpl implements BoardService {
   public Board createBoard() {
     Board board = new Board(6, 6);
     var stones = Stream.generate(() -> board.numberOfStones).limit(board.numberOfPits).toList();
@@ -41,14 +41,14 @@ public class BoardService {
     return board;
   }
 
-  private void setCircularMove(LinkedList<House> listOfHouseOnSideOne, Store storeHouseOne, LinkedList<House> listOfHouseOnSideTwo, Store storeHouseTwo) {
+  public void setCircularMove(LinkedList<House> listOfHouseOnSideOne, Store storeHouseOne, LinkedList<House> listOfHouseOnSideTwo, Store storeHouseTwo) {
     listOfHouseOnSideOne.getLast().setNext(storeHouseOne);
     storeHouseOne.setNext(listOfHouseOnSideTwo.getFirst());
     listOfHouseOnSideTwo.getLast().setNext(storeHouseTwo);
     storeHouseTwo.setNext(listOfHouseOnSideOne.getFirst());
   }
 
-  private void setOppositeHouse(List<House> listOfHouseOnSideOne, List<House> listOfHouseOnSideTwo) {
+  public void setOppositeHouse(List<House> listOfHouseOnSideOne, List<House> listOfHouseOnSideTwo) {
     for (int i = 0; i < listOfHouseOnSideOne.size(); i++) {
       House one = listOfHouseOnSideOne.get(i);
       House two = listOfHouseOnSideTwo.get(listOfHouseOnSideTwo.size() - i - 1);

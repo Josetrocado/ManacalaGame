@@ -5,18 +5,16 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class GameService {
+public class GameServiceImpl implements GameService {
   private Board board;
 
   private Player player;
 
   private Status status;
 
-  public record Result(Status status, PlayerNumber next, Board board) {
-  }
 
-  public static GameService create(Board board) {
-    GameService game = new GameService();
+  public static GameServiceImpl create(Board board) {
+    GameServiceImpl game = new GameServiceImpl();
     game.board = board;
     game.player = board.getPlayers().player1();
     game.status = Status.ACTIVE;
@@ -34,7 +32,7 @@ public class GameService {
 
     Pit landed = player.turn(house);
     if (player.complete()) {
-      otherPlayer().finish();
+      swap().finish();
       status = declareWinner();
     }
     player = nextPlayer(landed);
@@ -54,7 +52,7 @@ public class GameService {
     return Status.DRAW;
   }
 
-  private Player swap() {
+  public Player swap() {
     Players players = board.getPlayers();
     return switch (player.playerNumber()) {
       case ONE -> players.player2();
@@ -68,14 +66,4 @@ public class GameService {
     }
     return swap();
   }
-
-  public Player otherPlayer() {
-    Players players = board.getPlayers();
-    return switch (player.playerNumber()) {
-      case ONE -> players.player2();
-      case TWO -> players.player1();
-    };
-  }
-
-
 }
