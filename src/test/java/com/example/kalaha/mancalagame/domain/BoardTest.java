@@ -1,5 +1,6 @@
 package com.example.kalaha.mancalagame.domain;
 
+import com.example.kalaha.mancalagame.service.BoardService;
 import com.example.kalaha.mancalagame.service.BoardServiceImpl;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import static org.hamcrest.core.Is.is;
 
 class BoardTest {
 
-  private final BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
+  private final BoardService boardServiceImpl = new BoardServiceImpl();
 
   @Test
   public void testBoardHouses() {

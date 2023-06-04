@@ -14,24 +14,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GameServiceTest {
 
-  private final BoardServiceImpl boardServiceImpl = new BoardServiceImpl();
+  private final BoardService boardServiceImpl = new BoardServiceImpl();
 
   @Test
   public void testActivePlayer() {
-    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
+    GameService game = GameServiceImpl.create(boardServiceImpl.createBoard());
     Player player = game.getActivePlayer();
     assertThat(player.playerNumber(), is(ONE));
   }
 
   @Test
   void rejectMoveByInActive() {
-    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
+    GameService game = GameServiceImpl.create(boardServiceImpl.createBoard());
     assertThrows(IllegalStateException.class, () -> game.move(TWO, 1));
   }
 
   @Test
   void shouldAllowPlayerToAddStones() throws IllegalAccessException {
-    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
+    GameService game = GameServiceImpl.create(boardServiceImpl.createBoard());
     Result result = game.move(ONE, 1);
     var actual = GamePrint.board(result.board());
     assertThat(actual, is("""
@@ -46,7 +46,7 @@ class GameServiceTest {
 
   @Test
   void shouldAllowAlternateTurns() throws IllegalAccessException {
-    GameServiceImpl game = GameServiceImpl.create(boardServiceImpl.createBoard());
+    GameService game = GameServiceImpl.create(boardServiceImpl.createBoard());
 
     // player one makes a move on pit 1
     Result result = game.move(ONE, 1);
@@ -109,7 +109,7 @@ class GameServiceTest {
       List.of(6, 6, 6, 6, 6, 6),
       0
     );
-    GameServiceImpl game = GameServiceImpl.create(board);
+    GameService game = GameServiceImpl.create(board);
     var actual = GamePrint.board(board);
 
     assertThat(actual, is("""
@@ -140,7 +140,7 @@ class GameServiceTest {
       List.of(6, 6, 6, 6, 6, 5),
       0
     );
-    GameServiceImpl game = GameServiceImpl.create(board);
+    GameService game = GameServiceImpl.create(board);
     var actual = GamePrint.board(board);
     assertThat(actual, is("""
                      Player Two
