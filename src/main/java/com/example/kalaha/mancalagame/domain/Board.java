@@ -1,8 +1,6 @@
 package com.example.kalaha.mancalagame.domain;
 
 import java.util.List;
-
-
 public class Board {
 
   public int numberOfStones;

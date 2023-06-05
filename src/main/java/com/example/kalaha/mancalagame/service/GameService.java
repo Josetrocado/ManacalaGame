@@ -1,9 +1,6 @@
 package com.example.kalaha.mancalagame.service;
 
-import com.example.kalaha.mancalagame.domain.Player;
-import com.example.kalaha.mancalagame.domain.PlayerNumber;
-import com.example.kalaha.mancalagame.domain.Result;
-import com.example.kalaha.mancalagame.domain.Status;
+import com.example.kalaha.mancalagame.domain.*;
 
 public interface GameService {
 
@@ -15,9 +12,9 @@ public interface GameService {
 
   Player swap();
 
-  String generateBoardString(Result result);
+  ApiResponse generateBoardString(Result result);
 
   PlayerNumber determinePlayer(String playerNumber);
 
-  String getStartingBoard();
+  ApiResponse getStartingBoard();
 }
