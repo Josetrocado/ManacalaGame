@@ -67,8 +67,12 @@ public class GameServiceImpl implements GameService {
     return swap();
   }
 
-  public String generateBoardString(Result result) {
-    return GamePrint.board(result.board());
+  public ApiResponse generateBoardString(Result result) {
+    ApiResponse apiResponse = new ApiResponse();
+    apiResponse.setBoard(GamePrint.board(result.board()));;
+    apiResponse.setNextPlayer(result.next().toString());
+    apiResponse.setStatus(result.status().toString());
+    return apiResponse;
   }
 
   public PlayerNumber determinePlayer(String playerNumber) {
@@ -78,13 +82,17 @@ public class GameServiceImpl implements GameService {
     return PlayerNumber.TWO;
   }
 
-  public String getStartingBoard() {
-    return """
+  public ApiResponse getStartingBoard() {
+
+    ApiResponse apiResponse = new ApiResponse();
+    apiResponse.setBoard("""
                      Player Two
            | 06 | 06 | 06 | 06 | 06 | 06 |
       (00)                                 (00)
            | 06 | 06 | 06 | 06 | 06 | 06 |
                      Player One
-      """;
+      """);
+
+    return apiResponse;
   }
 }

@@ -1,6 +1,7 @@
 package com.example.kalaha.mancalagame.controller;
 
 
+import com.example.kalaha.mancalagame.domain.ApiResponse;
 import com.example.kalaha.mancalagame.domain.Board;
 import com.example.kalaha.mancalagame.domain.PlayerNumber;
 import com.example.kalaha.mancalagame.domain.Result;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manacala")
-@CrossOrigin(origins = "http://localhost:4200/", methods = {RequestMethod.GET, RequestMethod.POST}, allowedHeaders = {"Content-Type", "Authorization"})
+@CrossOrigin(origins = "http://localhost:4200/", methods = {RequestMethod.GET, RequestMethod.POST}, allowedHeaders = {"Content-Type"})
 public class GameController {
   @Autowired
   private BoardService boardServiceImpl;
@@ -30,14 +31,14 @@ public class GameController {
 
 
   @GetMapping(value = "/board", produces = MediaType.APPLICATION_JSON_VALUE)
-  public @ResponseBody Board getBoard() {
+  public @ResponseBody ApiResponse getBoard() {
     Board board = boardServiceImpl.createBoard();
     gameServiceImpl = GameServiceImpl.create(board);
-    return board;
+    return gameServiceImpl.getStartingBoard();
   }
 
   @PostMapping(value = "/move/{playerNumber}/{house}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String makeMove(@PathVariable String playerNumber, @PathVariable int house) throws IllegalAccessException {
+  public @ResponseBody ApiResponse makeMove(@PathVariable String playerNumber, @PathVariable int house) throws IllegalAccessException {
     PlayerNumber player = gameServiceImpl.determinePlayer(playerNumber);
     Result result = gameServiceImpl.move(player, house);
     return gameServiceImpl.generateBoardString(result);
